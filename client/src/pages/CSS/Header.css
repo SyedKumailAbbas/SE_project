@@ -1,0 +1,66 @@
+/* Custom CSS for Header component */
+
+/* Navbar container */
+.navbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 2px solid #1a202c; /* Tailwind CSS: border-b-2 border-gray-900 */
+    background-color: #1a202c; /* Tailwind CSS: bg-gray-900 */
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05); /* Tailwind CSS: shadow-md */
+    padding: 1rem;
+    margin: 0;
+  }
+  
+  /* Logo link */
+  .logo-link {
+    font-size: 1rem;
+    font-weight: 600;
+    color: #ffffff; /* Tailwind CSS: text-white */
+    text-decoration: none;
+    display: flex;
+    align-items: center;
+  }
+  
+  /* Logo link hover */
+  .logo-link:hover {
+    color: #d1d5db; /* Tailwind CSS: hover:text-gray-300 */
+  }
+  
+  /* Navbar links container */
+  .navbar-links {
+    display: flex;
+    gap: 1rem;
+  }
+  
+  /* Navbar link */
+  .navbar-link {
+    margin: 0 0.5rem;
+    color: #ffffff; /* Tailwind CSS: text-white */
+    text-decoration: none;
+  }
+  
+  /* Navbar link hover */
+  .navbar-link:hover {
+    color: #d1d5db; /* Tailwind CSS: hover:text-gray-300 */
+  }
+  
+  /* Logout button */
+  .logout-button {
+    color: #ffffff; /* Tailwind CSS: text-white */
+    font-weight: 600;
+    text-decoration: none;
+    padding: 0.5rem 1rem;
+    background-color: #4a5568; /* Tailwind CSS: bg-gray-700 */
+    border: 1px solid #4a5568; /* Tailwind CSS: border border-gray-700 */
+    border-radius: 0.25rem; /* Tailwind CSS: rounded */
+    transition: background-color 0.3s, border-color 0.3s, box-shadow 0.3s;
+  }
+  
+  /* Logout button hover */
+  .logout-button:hover {
+    background-color: #2d3748; /* Tailwind CSS: hover:bg-gray-800 */
+    border-color: #2d3748; /* Tailwind CSS: hover:border-gray-800 */
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Tailwind CSS: hover:shadow-md */
+  }
+  

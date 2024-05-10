@@ -1,0 +1,55 @@
+/* ClassDetails.css */
+
+.class-details-container {
+    max-width: 600px;
+    margin: 0 auto;
+    padding: 20px;
+    border-radius: 10px;
+    background-color: #f4f4f4; /* Light gray background */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Soft shadow */
+  }
+  
+  .class-title {
+    font-size: 32px; /* Bigger title */
+    font-weight: bold;
+    color: #333; /* Dark gray */
+    text-align: center; /* Center align title */
+  }
+  
+  .class-details {
+    margin-top: 20px;
+  }
+  
+  .class-details p {
+    font-size: 18px; /* Default font size */
+    color: #333; /* Dark gray text */
+  }
+  
+  .class-details p strong {
+    font-weight: bold;
+  }
+  
+  .class-code, .class-teacher {
+    font-size: 22px; /* Bigger font for code and teacher */
+    color: #333; /* Dark gray text */
+    text-align: right; /* Align code and teacher to the right */
+  }
+  
+/* ClassDetails.css */
+
+.teacher-content {
+    margin-top: 20px;
+    padding: 15px;
+    background-color: #e6e6e6; /* Light gray background */
+    border-radius: 5px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Soft shadow */
+  }
+  
+  .teacher-input {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #ccc; /* Gray border */
+    border-radius: 5px;
+    font-size: 16px;
+  }
+  
