@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
-import { useParams, Link, useNavigate } from 'react-router-dom';
+import { useParams, Link, useNavigate, NavLink } from 'react-router-dom';
 import '../pages/CSS/ClassDetails.css'; // Import CSS file for styling
 import Header from '../Components/Header';
 import Modal from '../Components/Modal'; // Import Modal component
@@ -103,21 +103,24 @@ const ClassDetails = () => {
     <>
       <Header />
       <div className="class-details-container">
-        <h1 className="class-details-title">Class Detail</h1>
         {classData ? (
           <div className="class-details">
-            <p><strong>Title:</strong> {classData.title}</p>
-            <p><strong>Description:</strong> {classData.description}</p>
-            <p><strong>Class Code:</strong> {classData.classcode}</p>
-            <p><strong>Class Teacher:</strong> {classData.teacher}</p>
+            <div>
+              <h1 className="class-details-title">{classData.title}</h1>
+              <p><strong></strong> {classData.description}</p>
+            </div>
+            <div>
+              <p><strong>CODE: </strong> {classData.classcode}</p>
+              <p><strong>INSTRUCTOR: </strong> {classData.teacher}</p>
+            </div>
 
-            {classData.teacher === username && (
-              <div className="teacher-content">
-                <button onClick={handleModalOpen} className="add-content-button">
-                  Add Content
-                </button>
-              </div>
-            )}
+              {classData.teacher === username && (
+                <div className="teacher-content">
+                  <button onClick={handleModalOpen} className="add-content-button">
+                    Add Content
+                  </button>
+                </div>
+              )}
           </div>
         ) : (
           <p>Loading...</p>
@@ -195,10 +198,9 @@ const ClassDetails = () => {
       <div className="posts">
         {posts.map((post) => (
           <Link key={post._id} to={`/post/${post._id}/${username}/${classData.teacher}`} className="post">
-            <div>
+            <div className='post'>
               <h3>{post.title}</h3>
               <p>{ReactHtmlParser(post.description)}</p>
-              <p>Type: {post.type}</p>
             </div>
           </Link>
         ))}

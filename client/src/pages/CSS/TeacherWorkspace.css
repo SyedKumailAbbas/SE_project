@@ -11,6 +11,12 @@
     border-bottom-left-radius: 10em;
     border-bottom-right-radius: 10em;
   }
+  ul {
+    list-style-type: none;
+}
+.classcard{
+  margin: 4px;
+}
   
   /* Style cards */
   .card {

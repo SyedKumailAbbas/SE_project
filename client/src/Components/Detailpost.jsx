@@ -4,7 +4,7 @@ import { useParams } from 'react-router-dom';
 import Modal from './Modal'; // Import the Modal component
 import './CSS/Detailpost.css'; // Import CSS file for styling
 import { toast } from 'react-toastify'; // Import toast notifications
-
+import Header from './Header.jsx'
 const Detailpost = () => {
     // Extract parameters from the URL
     const { postid, username, teachername } = useParams();
@@ -44,7 +44,7 @@ const Detailpost = () => {
         const ampm = hours >= 12 ? 'PM' : 'AM';
         const formattedHours = hours % 12 || 12; // Convert to 12-hour format
         const formattedMinutes = minutes < 10 ? '0' + minutes : minutes; // Add leading zero for single-digit minutes
-    
+
         return `${day}${getDaySuffix(day)} ${month} ${formattedHours}:${formattedMinutes}${ampm}`;
     };
     const getDaySuffix = (day) => {
@@ -80,18 +80,22 @@ const Detailpost = () => {
     // Submit a new comment
     const handleSubmitComment = async () => {
         try {
-            // Send the comment data to the backend
+            // Check if the comment body is empty
+            if (!commentBody.trim()) {
+                toast.error('Comment body cannot be empty.'); // Log an error message
+                return; // Exit the function early if the comment body is empty
+            }
+            
+            // If the comment body is not empty, proceed with posting the comment
             await axios.post(`http://localhost:3000/comment/${postid}/${username}`, { commentBody });
-            // Optionally, you can reload the post details after posting the comment
             fetchComments();
-            // Clear the comment input field
             setCommentBody('');
-            // Hide the comment form after submitting
             setShowCommentForm(false);
         } catch (error) {
             console.error('Error posting comment:', error);
         }
     };
+    
 
     // Show all comments
     const handleShowAllComments = () => {
@@ -168,95 +172,111 @@ const Detailpost = () => {
 
     // Render the component
     return (
-        <div className="detail-post-container">
-            <div className="post-details">
-                <h1>{post.type}</h1>
-                <h2>{post.title}</h2>
-                <p>{post.description}</p>
-                {/* Add more details as needed */}
-            </div>
-            <div className="comment-section">
-                <div className="comment-form">
-                    {/* Render comment form */}
-                    {showCommentForm ? (
-                        <div>
-                            <textarea value={commentBody} onChange={handleCommentChange} />
-                            <button onClick={handleSubmitComment}>Post Comment</button>
-                        </div>
-                    ) : (
-                        <button onClick={() => setShowCommentForm(true)}>Add Comment</button>
-                    )}
-                    {/* Render assignment submission button if applicable */}
-                    {post.type === 'assignment' && username !== teachername && (
-                        <button onClick={handleSubmissionButtonClick}>Submit Assignment</button>
-                    )}
-                    {/* Render show submission button for teacher */}
-                    {username === teachername && (
-                        <button onClick={() => handleShowSubmissionButtonClick(postid)}>Show Submissions</button>
-                    )}
+        <>
+            <Header />
+            <div className="detail-post-container">
+                <div className="post-details">
+                    <h1>{post.type}</h1>
+                    <h2>{post.title}</h2>
+                    <p>{post.description}</p>
+                    {/* Add more details as needed */}
                 </div>
-                <div className="comment-list">
-                    {/* Render comments */}
-                    {showAllComments ? (
-                        <Modal onClose={() => setShowAllComments(false)}>
-                            <div className="all-comments">
-                                {comments.map((comment) => (
-                                    <div key={comment._id} className="comment">
-                                        <p>{comment.username}</p>
-                                        <p>{comment.body}</p>
-                                        {/* Render additional comment details */}
-                                        {comment.username === username && (
-                                            <button onClick={() => handleDeleteComment(comment._id)}>Delete</button>
-                                        )}
-                                    </div>
-                                ))}
-                            </div>
-                        </Modal>
-                    ) : (
-                        comments.slice(0, 2).map((comment) => (
-                            <div key={comment._id} className="comment">
-                                <p>{comment.username}</p>
-                                <p>{comment.body}</p>
-                                {/* Render additional comment details */}
-                                {comment.username === username && (
-                                    <button onClick={() => handleDeleteComment(comment._id)}>Delete</button>
-                                )}
-                            </div>
-                        ))
-                    )}
-                    {/* Render button to show more comments */}
-                    {!showAllComments && comments.length > 2 && (
-                        <button onClick={handleShowAllComments}>Show More Comments</button>
-                    )}
-                </div>
-            </div>
-            {/* Render assignment submission modal */}
-            {showAssignmentModal && (
-                <Modal onClose={() => setShowAssignmentModal(false)}>
-                    <div className="assignment-submission-modal">
-                        <input type="text" placeholder="Your submission" value={submissionLink} onChange={(e) => setSubmissionLink(e.target.value)} />
-                        <button onClick={handleSubmitAssignment}>Submit</button>
-                    </div>
-                </Modal>
-            )}
-            {showSubmissionModal && (
-                <Modal onClose={() => setShowSubmissionModal(false)}>
-                    <div className="submission-modal-content">
-                        <h2>Assignments</h2>
-                        {assignments.map((assignment, index) => (
-                            <div key={index} className="assignment-item">
-                                {/* Render assignment details */}
-                                <p>{assignment.studentUsername}</p>
-                                <p>{assignment.submissionLink}</p>
-                                <p>{formatSubmissionTime(assignment.submissionTime)}</p>
-                                {/* Add more assignment details as needed */}
-                            </div>
-                        ))}
-                    </div>
-                </Modal>
-            )}
+                <div className="comment-section">
+                    <div className="comment-form">
+                        <div className='submit-form'>
+                            {/* Render comment form */}
+                            {showCommentForm ? (
+                                <div>
+                                    <input
+                                        type="text"
+                                        value={commentBody}
+                                        onChange={handleCommentChange}
+                                        required  // Add the required attribute here
+                                    />
+                                    <button onClick={handleSubmitComment}>Post Comment</button>
+                                </div>
 
-        </div>
+                            ) : (
+                                <button onClick={() => setShowCommentForm(true)}>Add Comment</button>
+                            )}
+                        </div>
+                        {/* Render assignment submission button if applicable */}
+                        {post.type === 'assignment' && username !== teachername && (
+                            <div className='submit-button'>
+                                <button onClick={handleSubmissionButtonClick}>Submit Assignment</button>
+                            </div>
+                        )}
+                        {/* Render show submission button for teacher */}
+                        {username === teachername && post.type === 'assignment' && (
+                            <div className='submit-button'>
+
+                                <button onClick={() => handleShowSubmissionButtonClick(postid)}>Show Submissions</button>
+                            </div>
+                        )}
+                    </div>
+                    <div className="comment-list">
+                        {/* Render comments */}
+                        {showAllComments ? (
+                            <Modal onClose={() => setShowAllComments(false)}>
+                                <div className="all-comments">
+                                    {comments.map((comment) => (
+                                        <div key={comment._id} className="comment">
+                                            <p>{comment.username}</p>
+                                            <p>{comment.body}</p>
+                                            {/* Render additional comment details */}
+                                            {comment.username === username && (
+                                                <button onClick={() => handleDeleteComment(comment._id)}>Delete</button>
+                                            )}
+                                        </div>
+                                    ))}
+                                </div>
+                            </Modal>
+                        ) : (
+                            comments.slice(0, 2).map((comment) => (
+                                <div key={comment._id} className="comment">
+                                    <strong>  <p>{comment.username}</p></strong>
+                                    <p>{comment.body}</p>
+                                    {/* Render additional comment details */}
+                                    {comment.username === username && (
+                                        <button onClick={() => handleDeleteComment(comment._id)}>Delete</button>
+                                    )}
+                                </div>
+                            ))
+                        )}
+                        {/* Render button to show more comments */}
+                        {!showAllComments && comments.length > 2 && (
+                            <button onClick={handleShowAllComments}>Show More Comments</button>
+                        )}
+                    </div>
+                </div>
+                {/* Render assignment submission modal */}
+                {showAssignmentModal && (
+                    <Modal onClose={() => setShowAssignmentModal(false)}>
+                        <div className="assignment-submission-modal">
+                            <input type="text" placeholder="Your submission" value={submissionLink} onChange={(e) => setSubmissionLink(e.target.value)} />
+                            <button onClick={handleSubmitAssignment}>Submit</button>
+                        </div>
+                    </Modal>
+                )}
+                {showSubmissionModal && (
+                    <Modal onClose={() => setShowSubmissionModal(false)}>
+                        <div className="submission-modal-content">
+                            <h2>Assignments</h2>
+                            {assignments.map((assignment, index) => (
+                                <div key={index} className="assignment-item">
+                                    {/* Render assignment details */}
+                                    <p>{assignment.studentUsername}</p>
+                                    <p>{assignment.submissionLink}</p>
+                                    <p>{formatSubmissionTime(assignment.submissionTime)}</p>
+                                    {/* Add more assignment details as needed */}
+                                </div>
+                            ))}
+                        </div>
+                    </Modal>
+                )}
+
+            </div>
+        </>
     );
 };
 

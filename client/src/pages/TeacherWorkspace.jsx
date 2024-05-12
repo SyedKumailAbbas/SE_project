@@ -61,6 +61,7 @@ function TeacherWorkspace({ teachername }) {
         {/* Your Classes - Left Card */}
         <div className="card bg-white rounded-lg shadow-md p-8">
           <h2 className="text-2xl font-bold mb-4">Your Classes</h2>
+          <div className="class-scroll" style={{ maxHeight: '200px', overflowY: 'scroll' }}>
           <ul>
             {/* Check if classes is an array before mapping */}
             {Array.isArray(classes) && classes.map((cls) => (
@@ -69,6 +70,7 @@ function TeacherWorkspace({ teachername }) {
               </li>
             ))}
           </ul>
+          </div>
         </div>
          {/* Create Class - Right Card */}
         <div onClick={openDialog} className="card bg-white rounded-lg shadow-md p-8 cursor-pointer">

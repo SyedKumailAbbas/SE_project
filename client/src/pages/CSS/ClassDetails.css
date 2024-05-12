@@ -2,14 +2,14 @@
 
 /* Container */
 .class-details-container {
-  max-width: 600px;
-  margin: 0 auto;
+  max-width: 80%;
+  margin: 20px auto;
   padding: 20px;
   border-radius: 10px;
   background-color: #f4f4f4;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  font-family: Arial, Helvetica, sans-serif;
 }
-
 /* Title */
 .class-title {
   font-size: 32px;
@@ -21,6 +21,8 @@
 /* Details */
 .class-details {
   margin-top: 20px;
+  display: flex;
+  justify-content: space-evenly;
 }
 
 .class-details p {
@@ -40,7 +42,10 @@
   border-radius: 5px;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
+.teacher-content>button {
+  border: none;
 
+}
 .teacher-input {
   width: 100%;
   padding: 10px;
@@ -138,4 +143,31 @@ label {
 
 .link-wrapper a:hover {
   text-decoration: underline; /* Underline on hover */
+}
+.posts {
+  /* background: black; */
+  max-width: 80%;
+  margin: 20px auto;
+  display: flex;
+  flex-direction: column;
+
+}
+.post {
+  display: flex;
+  padding: 6px;
+  flex-direction: column;
+  background-color: rgb(218, 218, 218);
+  border-radius: 10px;
+  width: 70%;
+  margin: auto;
+  text-decoration: none;
+  color: black;
+  margin-top: 10px;
+}
+.post h3{
+  text-transform: capitalize;
+  font-family: Arial, Helvetica, sans-serif;
+}
+.post p{
+  color: rgb(86, 86, 86);
 }
