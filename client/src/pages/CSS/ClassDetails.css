@@ -1,55 +1,141 @@
 /* ClassDetails.css */
 
+/* Container */
 .class-details-container {
-    max-width: 600px;
-    margin: 0 auto;
-    padding: 20px;
-    border-radius: 10px;
-    background-color: #f4f4f4; /* Light gray background */
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Soft shadow */
-  }
-  
-  .class-title {
-    font-size: 32px; /* Bigger title */
-    font-weight: bold;
-    color: #333; /* Dark gray */
-    text-align: center; /* Center align title */
-  }
-  
-  .class-details {
-    margin-top: 20px;
-  }
-  
-  .class-details p {
-    font-size: 18px; /* Default font size */
-    color: #333; /* Dark gray text */
-  }
-  
-  .class-details p strong {
-    font-weight: bold;
-  }
-  
-  .class-code, .class-teacher {
-    font-size: 22px; /* Bigger font for code and teacher */
-    color: #333; /* Dark gray text */
-    text-align: right; /* Align code and teacher to the right */
-  }
-  
-/* ClassDetails.css */
+  max-width: 600px;
+  margin: 0 auto;
+  padding: 20px;
+  border-radius: 10px;
+  background-color: #f4f4f4;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
 
+/* Title */
+.class-title {
+  font-size: 32px;
+  font-weight: bold;
+  color: #333;
+  text-align: center;
+}
+
+/* Details */
+.class-details {
+  margin-top: 20px;
+}
+
+.class-details p {
+  font-size: 18px;
+  color: #333;
+}
+
+.class-details p strong {
+  font-weight: bold;
+}
+
+/* Teacher content */
 .teacher-content {
-    margin-top: 20px;
-    padding: 15px;
-    background-color: #e6e6e6; /* Light gray background */
-    border-radius: 5px;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Soft shadow */
-  }
-  
-  .teacher-input {
-    width: 100%;
-    padding: 10px;
-    border: 1px solid #ccc; /* Gray border */
-    border-radius: 5px;
-    font-size: 16px;
-  }
-  
+  margin-top: 20px;
+  padding: 15px;
+  background-color: #e6e6e6;
+  border-radius: 5px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.teacher-input {
+  width: 100%;
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  font-size: 16px;
+}
+
+/* Tabs */
+.class-tabs {
+  display: flex;
+  justify-content: center;
+  margin-top: 20px;
+}
+
+.class-tabs button {
+  padding: 10px 20px;
+  margin: 0 10px;
+  font-size: 16px;
+  background-color: #f9f9f9;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.class-tabs button.active-tab {
+  background-color: #007bff;
+  color: #fff;
+}
+
+.class-tabs button:hover {
+  background-color: #e9e9e9;
+}
+
+/* Modal */
+.modal {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background-color: #fff;
+  padding: 20px;
+  border-radius: 5px;
+  box-shadow: 0 0 20px rgba(0, 0, 0, 0.2);
+}
+
+/* Form */
+form {
+  display: flex;
+  flex-direction: column;
+}
+
+/* Label */
+label {
+  margin-bottom: 5px;
+}
+
+/* Input fields */
+.input-field, .textarea-field {
+  margin-bottom: 10px;
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+}
+
+.textarea-field {
+  resize: vertical;
+}
+
+/* Submit button */
+.submit-button {
+  padding: 10px 20px;
+  background-color: #007bff;
+  color: #fff;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.submit-button:hover {
+  background-color: #0056b3;
+}
+/* Add this CSS to your ClassDetails.css file or any other appropriate CSS file */
+
+/* Styling links to remove underline and change color */
+/* Add this CSS to your ClassDetails.css file or any other appropriate CSS file */
+
+/* Styling links within the Link component */
+.link-wrapper a {
+  text-decoration: none; /* Remove underline */
+  color: #333; /* Change link color to dark gray */
+}
+
+.link-wrapper a:hover {
+  text-decoration: underline; /* Underline on hover */
+}

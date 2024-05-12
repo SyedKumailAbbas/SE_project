@@ -3,6 +3,7 @@ import { RouterProvider, createBrowserRouter } from "react-router-dom";
 import { Dashboard, HomeLayout, Landing, Login, Logout, Register,ClassDetails } from "./pages";
 import { ToastContainer, toast } from 'react-toastify';
 import Header from "./Components/Header";
+import Detailpost from "./Components/Detailpost";
 
 const router = createBrowserRouter([
   {
@@ -28,6 +29,10 @@ const router = createBrowserRouter([
       {
         path: "dashboard",
         element: <Dashboard />,
+      },
+      {
+        path: "post/:postid/:username/:teachername",
+        element: <Detailpost />,
       },
       {
         path: "logout",

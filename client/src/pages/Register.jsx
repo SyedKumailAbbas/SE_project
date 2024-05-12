@@ -16,16 +16,15 @@ const Register = () => {
 
   const handleRegisterSubmit = async (e) => {
     e.preventDefault();
-    const name = e.target.name.value;
-    const lastname = e.target.lastname.value;
+    const username = e.target.username.value;
     const email = e.target.email.value;
     const password = e.target.password.value;
     const confirmPassword = e.target.confirmPassword.value;
 
-    if (name && lastname && email && password && confirmPassword && role) {
+    if (username && email && password && confirmPassword && role) {
       if (password === confirmPassword) {
         const formData = {
-          username: name + " " + lastname,
+          username,
           email,
           password,
           role, // Add role to the form data
@@ -35,7 +34,7 @@ const Register = () => {
           toast.success("Registration successful");
           navigate("/login");
         } catch (err) {
-          toast.error(err.message);
+          toast.error(err.response.data.msg);
         }
       } else {
         toast.error("Passwords don't match");
@@ -66,8 +65,7 @@ const Register = () => {
             <h2>Welcome to our website!</h2>
             <p>Please enter your details</p>
             <form onSubmit={handleRegisterSubmit}>
-              <input type="text" placeholder="Name" name="name" required />
-              <input type="text" placeholder="Lastname" name="lastname" required />
+              <input type="text" placeholder="Username" name="username" required />
               <input type="email" placeholder="Email" name="email" required />
               <div className="pass-input-div">
                 <input type={showPassword ? "text" : "password"} placeholder="Password" name="password" required />

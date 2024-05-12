@@ -13,9 +13,10 @@ const classSchema = new mongoose.Schema({
     type: String, // Adjust the type to String
     required: true
   },
-  classCode: {
+  classcode: {
     type: String,
-    required: true
+    required: true,
+    unique:true
   },
   students: [
     {

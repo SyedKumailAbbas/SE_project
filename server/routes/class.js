@@ -4,7 +4,6 @@ const express = require("express");
 const router = express.Router();
 
 const { create, join, getClassesByTeacherName,getClassesByStudentUsername,getClassById } = require("../controllers/class");
-const authMiddleware = require('../middleware/auth');
 
 router.route("/create").post(create);
 router.route("/join").post(join);

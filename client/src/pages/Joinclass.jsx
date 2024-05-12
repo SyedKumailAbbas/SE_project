@@ -3,11 +3,11 @@ import axios from 'axios';
 
 const JoinClassForm = ({ username, onClose }) => {
     console.log(username)
-    const [classCode, setClassCode] = useState('');
+    const [classcode, setclasscode] = useState('');
     const [errorMessage, setErrorMessage] = useState('');
 
     const handleInputChange = (e) => {
-        setClassCode(e.target.value);
+        setclasscode(e.target.value);
     };
 
     const handleSubmit = async (e) => {
@@ -15,7 +15,7 @@ const JoinClassForm = ({ username, onClose }) => {
         try {
             // Send the class code and student ID/username to the backend API for joining the class
             const requestData = {
-                classCode,
+                classcode,
                 username
             };
             const response = await axios.post('http://localhost:3000/class/join', requestData);
@@ -32,11 +32,11 @@ const JoinClassForm = ({ username, onClose }) => {
     return (
         <form onSubmit={handleSubmit} className="space-y-4">
             <div>
-                <label htmlFor="classCode" className="block font-semibold">Class Code:</label>
+                <label htmlFor="classcode" className="block font-semibold">Class Code:</label>
                 <input
                     type="text"
-                    id="classCode"
-                    value={classCode}
+                    id="classcode"
+                    value={classcode}
                     onChange={handleInputChange}
                     required
                     className="input input-bordered w-full"

@@ -4,8 +4,6 @@ const express = require('express');
 const router = express.Router();
 const Class = require('../models/Class');
 const User = require('../models/User')
-
-// Function to generate a random alphanumeric code
 const generateRandomCode = (length) => {
   const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
   let code = '';
@@ -20,17 +18,17 @@ const generateRandomCode = (length) => {
 const create = async (req, res) => {
   try {
     const { title, description, teacher } = req.body;
-    let classCode = generateRandomCode(8); // Generate an 8-character code
+    let classcode = generateRandomCode(8); // Generate an 8-character code
 
     // Check if the generated class code already exists
-    let existingClass = await Class.findOne({ classCode });
+    let existingClass = await Class.findOne({ classcode });
     while (existingClass) {
       // Regenerate the class code until it's unique
-      classCode = generateRandomCode(8);
-      existingClass = await Class.findOne({ classCode });
+      classcode = generateRandomCode(8);
+      existingClass = await Class.findOne({ classcode });
     }
 
-    const newClass = await Class.create({ title, description, teacher, classCode });
+    const newClass = await Class.create({ title, description, teacher, classcode });
     res.status(201).json(newClass);
   } catch (err) {
     res.status(400).json({ message: err.message });
@@ -40,9 +38,9 @@ const create = async (req, res) => {
 // Function to enroll a student in a class using class code
 const join = async (req, res) => {
   try {
-    const { classCode, username } = req.body;
+    const { classcode, username } = req.body;
 
-    const cls = await Class.findOne({ classCode });
+    const cls = await Class.findOne({ classcode });
     if (!cls) {
       return res.status(404).json({ message: 'Class not found' });
     }

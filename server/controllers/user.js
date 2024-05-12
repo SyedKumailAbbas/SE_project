@@ -45,27 +45,40 @@ const getAllUsers = async (req, res) => {
 
   return res.status(200).json({ users });
 };
-
 const register = async (req, res) => {
-  let foundUser = await User.findOne({ email: req.body.email });
-  if (foundUser === null) {
-    let { username, email, password,role } = req.body;
+  try {
+    // Check if the email already exists
+    let foundUserByEmail = await User.findOne({ email: req.body.email });
+    if (foundUserByEmail) {
+      return res.status(400).json({ msg: "Email already in use" });
+    }
+
+    // Check if the username already exists
+    let foundUserByUsername = await User.findOne({ name: req.body.username });
+    if (foundUserByUsername) {
+      return res.status(400).json({ msg: "Username already in use" });
+    }
+
+    // If both email and username are unique, proceed with registration
+    let { username, email, password, role } = req.body;
     if (username.length && email.length && password.length) {
       const person = new User({
         name: username,
         email: email,
         password: password,
-        role:role,
+        role: role,
       });
       await person.save();
       return res.status(201).json({ person });
-    }else{
-        return res.status(400).json({msg: "Please add all values in the request body"});
+    } else {
+      return res.status(400).json({ msg: "Please add all values in the request body" });
     }
-  } else {
-    return res.status(400).json({ msg: "Email already in use" });
+  } catch (error) {
+    console.error("Error registering user:", error);
+    return res.status(500).json({ msg: "Internal server error" });
   }
 };
+
 
 module.exports = {
   login,
