@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import axios from 'axios';
 
-const JoinClassForm = ({ username, onClose }) => {
+const JoinClassForm = ({ username,addClass, onClose }) => {
     console.log(username)
     const [classcode, setclasscode] = useState('');
     const [errorMessage, setErrorMessage] = useState('');
@@ -21,6 +21,8 @@ const JoinClassForm = ({ username, onClose }) => {
             const response = await axios.post('http://localhost:3000/class/join', requestData);
             console.log('Class joined:', response.data);
             // Close the form after successful submission
+            const newclass=response.data
+            // addClass(newclass)
             onClose();
         } catch (error) {
             console.error('Error joining class:', error);

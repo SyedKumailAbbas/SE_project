@@ -1,33 +1,36 @@
+// Existing imports...
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
-import { useParams, Link, useNavigate, NavLink } from 'react-router-dom';
-import '../pages/CSS/ClassDetails.css'; // Import CSS file for styling
+import { useParams, Link } from 'react-router-dom';
+import '../pages/CSS/ClassDetails.css';
 import Header from '../Components/Header';
-import Modal from '../Components/Modal'; // Import Modal component
-import '../pages/CSS/Modal.css'; // Import CSS file for styling the modal
+import Modal from '../Components/Modal';
 import ReactHtmlParser from 'react-html-parser';
+import Students from '../Components/Students';
 
 const ClassDetails = () => {
   const [classData, setClassData] = useState(null);
-  const [showModal, setShowModal] = useState(false); // State to control modal visibility
+  const [showModal, setShowModal] = useState(false);
   const [formData, setFormData] = useState({
     title: '',
     description: '',
-    type: 'announcement', // Default type
-    duedate: '', // Added duedate field
+    type: 'announcement',
+    duedate: '',
   });
-  const [activeTab, setActiveTab] = useState('announcement'); // State to manage active tab
-  const [posts, setPosts] = useState([]); // State to store fetched posts
+  const [activeTab, setActiveTab] = useState('announcement');
+  const [posts, setPosts] = useState([]);
   const { classId, username } = useParams();
-  const navigate = useNavigate();
-
+  const formatDate = (dateString) => {
+    const date = new Date(dateString);
+    const options = { day: 'numeric', month: 'long', year: 'numeric' };
+    return date.toLocaleDateString('en-US', options);
+  };
   useEffect(() => {
     const fetchData = async () => {
       try {
         const response = await axios.get(`http://localhost:3000/class/classes/classid/${classId}`);
         console.log('API Response:', response.data);
         setClassData(response.data);
-        // Fetch posts for the default tab (announcement)
         fetchPosts('announcement');
       } catch (error) {
         console.error('Error fetching class details:', error);
@@ -37,7 +40,6 @@ const ClassDetails = () => {
     fetchData();
   }, [classId]);
 
-  // Function to fetch posts based on type and class ID
   const fetchPosts = async (type) => {
     try {
       const response = await axios.get(`http://localhost:3000/post/getpostbytype/${classId}/${type}`);
@@ -57,22 +59,19 @@ const ClassDetails = () => {
 
   const handleTabChange = (tab) => {
     setActiveTab(tab);
-    fetchPosts(tab); // Fetch posts when the tab changes
+    fetchPosts(tab);
   };
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
     let newValue = value;
-    // If the input name is 'description', parse the HTML content to wrap URLs in <a> tags
     if (name === 'description') {
       newValue = parseDescription(value);
     }
     setFormData({ ...formData, [name]: newValue });
   };
 
-  // Function to parse description content and wrap URLs in <a> tags
   const parseDescription = (description) => {
-    // Regular expression to match URLs
     const urlRegex = /(https?:\/\/[^\s]+)/g;
     return description.replace(urlRegex, '<a href="$1" target="_blank">$1</a>');
   };
@@ -80,19 +79,16 @@ const ClassDetails = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const postData = { ...formData, classid: classId }; // Include classId in the form data
+      const postData = { ...formData, classid: classId };
       await axios.post('http://localhost:3000/post/create', postData);
       console.log(postData);
-      // Optionally, you can close the modal after successful submission
       handleModalClose();
-      // Reset form data
       setFormData({
         title: '',
         description: '',
         type: 'announcement',
         duedate: '',
       });
-      // Refetch posts after submission to update the list
       fetchPosts(activeTab);
     } catch (error) {
       console.error('Error creating post:', error);
@@ -113,14 +109,14 @@ const ClassDetails = () => {
               <p><strong>CODE: </strong> {classData.classcode}</p>
               <p><strong>INSTRUCTOR: </strong> {classData.teacher}</p>
             </div>
-
-              {classData.teacher === username && (
-                <div className="teacher-content">
-                  <button onClick={handleModalOpen} className="add-content-button">
-                    Add Content
-                  </button>
-                </div>
-              )}
+            {classData.teacher === username && (
+              <div className="teacher-content">
+                <button onClick={handleModalOpen} className="add-content-button">
+                  Add Content
+                </button>
+                <Students />
+              </div>
+            )}
           </div>
         ) : (
           <p>Loading...</p>
@@ -197,12 +193,16 @@ const ClassDetails = () => {
       {/* Display posts based on the active tab */}
       <div className="posts">
         {posts.map((post) => (
-          <Link key={post._id} to={`/post/${post._id}/${username}/${classData.teacher}`} className="post">
-            <div className='post'>
-              <h3>{post.title}</h3>
-              <p>{ReactHtmlParser(post.description)}</p>
-            </div>
-          </Link>
+          <Link key={post._id} to={`/post/${post._id}/${username}/${classData.teacher}`}>
+          <div key={post._id} className="post">
+            <h3>{post.title}</h3>
+            <p>{ReactHtmlParser(post.description)}</p>
+            {/* Render due date if the post is an assignment */}
+            {post.type === 'assignment' && (
+              <p><strong>Due Date:</strong> {formatDate(post.duedate)}</p>
+            )}
+          </div>
+              </Link>
         ))}
       </div>
     </>

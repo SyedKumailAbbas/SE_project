@@ -98,10 +98,7 @@ const Register = () => {
               </div>
               <div className="register-center-buttons">
                 <button type="submit">Sign Up</button>
-                <button type="button">
-                  <img src={GoogleSvg} alt="" />
-                  Sign Up with Google
-                </button>
+              
               </div>
             </form>
           </div>

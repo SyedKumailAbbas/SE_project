@@ -13,7 +13,9 @@ function StudentWorkspace({ studentname }) {
   const openDialog = () => {
     setIsDialogOpen(true);
   };
-
+  const addClass = (newClass) => {
+    setClasses([...classes, newClass]);
+  };
   const closeDialog = () => {
     setIsDialogOpen(false);
   };
@@ -68,7 +70,7 @@ function StudentWorkspace({ studentname }) {
             <button onClick={closeDialog} className="absolute top-2 right-2 text-gray-500 hover:text-gray-700 focus:outline-none">
               X
             </button>
-            <JoinClassForm username={username} onClose={closeDialog} />
+            <JoinClassForm username={username} addClass={addClass} onClose={closeDialog} />
           </div>
         </div>
       )}

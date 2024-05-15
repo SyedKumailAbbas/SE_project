@@ -56,38 +56,68 @@ const join = async (req, res) => {
 
 
 const getClassesByTeacherName = async (req, res) => {
-    try {
-      const teacherName = req.params.teacherName;
-      const classes = await Class.find({ teacher: teacherName });
-      res.json(classes);
-    } catch (err) {
-      res.status(500).json({ message: err.message });
-    }
-  };
+  try {
+    const teacherName = req.params.teacherName;
+    const classes = await Class.find({ teacher: teacherName });
+    res.json(classes);
+  } catch (err) {
+    res.status(500).json({ message: err.message });
+  }
+};
 
-  const getClassesByStudentUsername = async (req, res) => {
-    try {
-      const { username } = req.params;
-  
-      // Get all classes where the student's ID appears in the students array
-      const classes = await Class.find({ students: username });
-      res.json(classes);
-    } catch (error) {
-      console.error('Error fetching classes:', error);
-      res.status(500).json({ message: 'Internal server error' });
+const getClassesByStudentUsername = async (req, res) => {
+  try {
+    const { username } = req.params;
+
+    // Get all classes where the student's ID appears in the students array
+    const classes = await Class.find({ students: username });
+    res.json(classes);
+  } catch (error) {
+    console.error('Error fetching classes:', error);
+    res.status(500).json({ message: 'Internal server error' });
+  }
+};
+const getClassById = async (req, res) => {
+  try {
+    const classId = req.params.classId;
+    const cls = await Class.findById(classId);
+    if (!cls) {
+      return res.status(404).json({ message: 'Class not found' });
     }
-  };
-  const getClassById = async (req, res) => {
-    try {
-      const classId = req.params.classId;
-      const cls = await Class.findById(classId);
-      if (!cls) {
-        return res.status(404).json({ message: 'Class not found' });
-      }
-      res.json(cls); // Only send cls as JSON, not classId separately
-    } catch (err) {
-      res.status(500).json({ message: err.message });
-    }
-  };
-  
-module.exports = { create, join ,getClassesByTeacherName,getClassesByStudentUsername,getClassById};
+    res.json(cls); // Only send cls as JSON, not classId separately
+  } catch (err) {
+    res.status(500).json({ message: err.message });
+  }
+};
+
+const getstds = async (req, res) => {
+
+  try {
+    const classid = req.params.classid
+    const getclass = await Class.findById(classid)
+    res.status(200).json(getclass.students)
+
+  }
+  catch (err) {
+    res.status(500).json({ message: err.message })
+  }
+}
+
+const removestd = async (req, res) => {
+try {
+  const {classid,stdname}=req.params
+        // Remove the specified student from the students array
+        const updatedClass = await Class.findByIdAndUpdate(
+          classid,
+          { $pull: { students: stdname } },
+          { new: true }
+      );
+
+      // Return the updated class or a success message
+      res.json(updatedClass.students);
+  } catch (error) {
+      console.error('Error removing student:', error);
+      res.status(500).json({ message: "Internal server error" });
+  }
+}
+module.exports = { removestd,create, join, getClassesByTeacherName, getstds, getClassesByStudentUsername, getClassById };

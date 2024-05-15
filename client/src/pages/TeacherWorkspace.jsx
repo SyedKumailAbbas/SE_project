@@ -36,7 +36,9 @@ function TeacherWorkspace({ teachername }) {
   const closeDialog = () => {
     setIsDialogOpen(false);
   };
-
+  const addClass = (newClass) => {
+    setClasses([...classes, newClass]);
+  };
   // Function to handle clicking outside dialog
   useEffect(() => {
     const handleClickOutside = (e) => {
@@ -62,17 +64,18 @@ function TeacherWorkspace({ teachername }) {
         <div className="card bg-white rounded-lg shadow-md p-8">
           <h2 className="text-2xl font-bold mb-4">Your Classes</h2>
           <div className="class-scroll" style={{ maxHeight: '200px', overflowY: 'scroll' }}>
-          <ul>
-            {/* Check if classes is an array before mapping */}
-            {Array.isArray(classes) && classes.map((cls) => (
-              <li className='classcard' key={cls._id}>
-                <Link to={`/classes/${cls._id}/${username}`} className='classname'>{cls.title}</Link>
-              </li>
-            ))}
-          </ul>
+            <ul>
+              {/* Check if classes is an array before mapping */}
+              {Array.isArray(classes) && classes.map((cls) => (
+                <li className='classcard' key={cls._id}>
+                  <Link to={`/classes/${cls._id}/${username}`} className='classname'>
+                  <h3>{cls.title}</h3></Link>
+                </li>
+              ))}
+            </ul>
           </div>
         </div>
-         {/* Create Class - Right Card */}
+        {/* Create Class - Right Card */}
         <div onClick={openDialog} className="card bg-white rounded-lg shadow-md p-8 cursor-pointer">
           <h2 className="text-2xl font-bold mb-4">Create Classes</h2>
           <p className="text-gray-600">Start by creating your classes and organizing your tasks.</p>
@@ -85,7 +88,7 @@ function TeacherWorkspace({ teachername }) {
             <button onClick={closeDialog} className="absolute top-2 right-2 text-gray-500 hover:text-gray-700 focus:outline-none">
               X
             </button>
-            <CreateClassForm tname={username} />
+            <CreateClassForm tname={username} addClass={addClass} />
           </div>
         </div>
       )}

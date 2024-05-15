@@ -20,7 +20,11 @@ const Detailpost = () => {
     const [assignments, setAssignments] = useState([]); // State for storing assignments
     const [showSubmissionModal, setShowSubmissionModal] = useState(false); // State for modal visibility
 
-
+    const formatDate = (dateString) => {
+        const date = new Date(dateString);
+        const options = { day: 'numeric', month: 'long', year: 'numeric' };
+        return date.toLocaleDateString('en-US', options);
+    };
     // Fetch post details and comments on component mount
     useEffect(() => {
         const fetchPost = async () => {
@@ -85,7 +89,7 @@ const Detailpost = () => {
                 toast.error('Comment body cannot be empty.'); // Log an error message
                 return; // Exit the function early if the comment body is empty
             }
-            
+
             // If the comment body is not empty, proceed with posting the comment
             await axios.post(`http://localhost:3000/comment/${postid}/${username}`, { commentBody });
             fetchComments();
@@ -95,7 +99,7 @@ const Detailpost = () => {
             console.error('Error posting comment:', error);
         }
     };
-    
+
 
     // Show all comments
     const handleShowAllComments = () => {
@@ -179,6 +183,9 @@ const Detailpost = () => {
                     <h1>{post.type}</h1>
                     <h2>{post.title}</h2>
                     <p>{post.description}</p>
+                    {post.type === 'assignment' && (
+                        <p><strong>Due Date:</strong> {formatDate(post.duedate)}</p>
+                    )}
                     {/* Add more details as needed */}
                 </div>
                 <div className="comment-section">
@@ -193,11 +200,11 @@ const Detailpost = () => {
                                         onChange={handleCommentChange}
                                         required  // Add the required attribute here
                                     />
-                                    <button onClick={handleSubmitComment}>Post Comment</button>
+                                    <button className='cmnt-btn' onClick={handleSubmitComment}>Post Comment</button>
                                 </div>
 
                             ) : (
-                                <button onClick={() => setShowCommentForm(true)}>Add Comment</button>
+                                <button className='cmnt-btn' onClick={() => setShowCommentForm(true)}>Add Comment</button>
                             )}
                         </div>
                         {/* Render assignment submission button if applicable */}
@@ -262,18 +269,46 @@ const Detailpost = () => {
                     <Modal onClose={() => setShowSubmissionModal(false)}>
                         <div className="submission-modal-content">
                             <h2>Assignments</h2>
-                            {assignments.map((assignment, index) => (
-                                <div key={index} className="assignment-item">
-                                    {/* Render assignment details */}
-                                    <p>{assignment.studentUsername}</p>
-                                    <p>{assignment.submissionLink}</p>
-                                    <p>{formatSubmissionTime(assignment.submissionTime)}</p>
-                                    {/* Add more assignment details as needed */}
-                                </div>
-                            ))}
+                            {assignments.map((assignment, index) => {
+                                // Format submission date as "May 13, 2024"
+                                // Format submission time
+                                const formattedSubmissionDate = new Date(assignment.submissionTime).toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' });
+
+                                // Format due date as "May 15, 2024"
+                                const formattedDueDate = new Date(assignment.dueDate).toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' });
+
+                                // Check if the submission is late
+                                const isLateSubmission = new Date(assignment.submissionTime) > new Date(assignment.dueDate);
+
+                                console.log('Submission Time:', formattedSubmissionDate);
+                                console.log('Due Date:', post.duedate);
+                                console.log('Is Late Submission:', isLateSubmission);
+
+                                return (
+                                    <div key={index} className="assignment-item">
+                                        {/* Render assignment details */}
+                                        <strong> <p>{assignment.studentUsername}</p></strong>
+                                        <p>{assignment.submissionLink}</p>
+                                        {/* Render formatted submission time */}
+                                        <div className="newdiv">
+                                            <p>{formattedSubmissionDate}</p>
+                                            {/* {isLateSubmission && (
+                                                <p className="late-submission-message">Late Submission</p>
+                                            )} */}
+                                        </div>
+                                        {/* Add more assignment details as needed */}
+                                    </div>
+                                );
+                            })}
                         </div>
                     </Modal>
                 )}
+
+
+
+
+
+
 
             </div>
         </>

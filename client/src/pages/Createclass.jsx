@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import axios from 'axios';
 
-const CreateClassForm = ({ tname }) => {
+const CreateClassForm = ( { tname, addClass }) => {
   // State to manage form fields
   const [formData, setFormData] = useState({
     title: '',
@@ -33,7 +33,8 @@ const CreateClassForm = ({ tname }) => {
       // Send formData to backend API for class creation
       const response = await axios.post('http://localhost:3000/class/create', requestData);
       console.log('Class created:', response.data);
-      
+      const newclass=response.data
+      addClass(newclass)
       // Reset form fields after submission
       setFormData({
         title: '',
